@@ -1,18 +1,14 @@
 <!doctype html>
 <html>
   <head>
-    <style>
-    div {
-      font-size: 72px;
-    }</style>
+    <style> div { font-size: 72px; }</style>
   </head>
   <body>
     <div id="value">0</div>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       var socket = io();
-      socket.on('send data', function(msg){
+      socket.on('sensor', function(msg){
         document.getElementById('value').innerHTML = msg;
       });
     </script>

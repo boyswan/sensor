@@ -1,44 +1,33 @@
-#define led D7
+int led1 = D0;
+int led2 = D7;
 
-int int_value;
-
-
-int i;
-int led_state = 0;
+int int_val;
+int i = 0;
 
 void setup() {
-
-    pinMode(led,OUTPUT);
-
-    Particle.variable("int_val", &int_value, INT);
-
-    Particle.function("int_fun",int_function);
-
-
-    i = 0;
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  Particle.variable("int_val", &int_value, INT);
+  Particle.function("int_fun",int_function);
 }
 
 
 void loop() {
+  int_value = i;
+  i = i + 1;
 
-    int_value = i;
+  digitalWrite(led1, HIGH);
+  digitalWrite(led2, HIGH);
 
-    i = i + 1;
+  delay(500);
 
-    delay(10000);
+  digitalWrite(led1, LOW);
+  digitalWrite(led2, LOW);
+
+  delay(500);
 
 }
 
-
-int int_function(String command) {
-
-    if (command=="wifi_rssi") {
-        return WiFi.RSSI();
-    }
-    if (command=="blink") {
-        led_state = !led_state;
-        digitalWrite(led,led_state);
-        return led_state;
-    }
-
+int int_function() {
+  return 1000;
 }
