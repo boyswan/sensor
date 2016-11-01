@@ -3,8 +3,8 @@
 SYSTEM_THREAD(ENABLED);
 SYSTEM_MODE(MANUAL);
 
-IPAddress serverAddr = IPAddress(192, 168, 0, 11);
-int serverPort = 9000;
+IPAddress SERVER_IP = IPAddress(192, 168, 0, 11);
+int SERVER_PORT = 9000;
 
 TCPClient client;
 
@@ -19,7 +19,7 @@ void loop() {
 	if (WiFi.ready()) {
 
 		if (!client.connected()) {
-      client.connect(serverAddr, serverPort);
+      client.connect(SERVER_IP, SERVER_PORT);
     }
 
 		if (client.connected()) {
@@ -30,7 +30,7 @@ void loop() {
 			snprintf(data, sizeof(data), "{\"body\":%d}", body);
 
 			client.printf("%s\n", data);
-			
+
 			Serial.println(data);
 		}
 

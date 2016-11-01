@@ -1,27 +1,17 @@
 <!doctype html>
 <html>
   <head>
-     <link rel="stylesheet" href="public/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+    <link rel="stylesheet" href="public/style.css">
   </head>
   <body>
     <div class="wrap">
-      <span class="message">.......</span>
-      <span class="name">....</span>
-      <span class="location">...</span>
+      <span class="message"></span>
+      <span class="name"></span>
+      <span class="location"></span>
     </div>
-
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+    <script type="text/javascript" src="public/lib/socket.io-1.2.0.js"></script>
     <script type="text/javascript" src="public/lib/particle.min.js"></script>
-    <script type="text/javascript" src="public/sensor.js"></script>
-
-    <!-- <script>
-      var socket = io();
-      socket.on('sensor', function(msg){
-        console.log(msg)
-        // document.getElementById('value').innerHTML = msg;
-      });
-    </script> -->
-
+    <script type="text/javascript" src="public/script.js"></script>
   </body>
 </html>
