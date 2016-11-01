@@ -1,56 +1,29 @@
-const Particle = require('particle-api-js');
-const particle = new Particle();
+const path = require('path')
+const net = require('net');
+const express = require('express')
 
-const app = require('express')();
+const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
-const AUTH_TOKEN = '7f2a87cddc0513ff9ad69834640087d0e2c787c1';
-const DEVICE_ID = '2f001e000947353138383138';
-
-// const Device = particle.getDevice({ deviceId: DEVICE_ID, auth: AUTH_TOKEN });
-// Device.then(data => console.log(data).catch(err => console.log(err));
-
-// const getData = () =>
-//   particle.getVariable({ deviceId: DEVICE_ID, name: 'numb', auth: AUTH_TOKEN })
-//     .then(data => (console.log(data.body.result), io.emit('sensor', data.body.result)))
-//     .catch(err => console.log(err));
-//
-//
-// setInterval(getData, 500);
-
-particle.getEventStream({ auth: AUTH_TOKEN, name: 'egg' })
-  .then(stream => stream.on('event', data => console.log("Event: " + JSON.stringify(data))));
-
-app.get('/', (req, res) =>
-  res.sendFile(__dirname + '/index.html'));
+const dataPort = 9000;
 
 
-http.listen(9000, () => console.log('listening on *:3000'));
+const handle = socket => {
 
+	console.log('data connection started from ' + socket.remoteAddress);
+	socket.setEncoding('utf8');
 
+	socket.on('data', data => {
+    io.emit('sensor', JSON.parse(data).body)
+  })
 
-var dgram = require('dgram');
-var udpServer = dgram.createSocket('udp4');
+	socket.on('end', () => console.log('data connection ended'));
 
-function processMonitorMsg(message) {
-  console.log(message)
-	// Your logic here to process the udp message
 }
 
-udpServer.on('error', (err) => {
-  console.log(`udpServer error:\n${err.stack}`);
-  udpServer.close();
-});
+net.createServer(handle).listen(dataPort);
 
-udpServer.on('message', (msg, rinfo) => {
-  console.log(`udpServer got: ${msg} from ${rinfo.address}:${rinfo.port}`);
-});
-
-udpServer.on('listening', () => {
-  var address = udpServer.address();
-  console.log(`server listening ${address.address}:${address.port}`);
-});
-
-
-udpServer.bind(6666);
+app.use('/public', express.static(path.join(__dirname, '/public')))
+app.get('/', (req, res) => res.sendFile(__dirname + '/public/index.html'));
+http.listen(8080, () => console.log('listening on 8080'));
